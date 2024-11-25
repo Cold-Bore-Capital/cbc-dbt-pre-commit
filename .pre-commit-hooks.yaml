@@ -1,0 +1,8 @@
+- id: find-missing-model-unique-tests
+  name: Check for models missing unique or unique combination of columns test
+  description: "Checks to ensure that a uniue column or combination of columns constraint is present for a given model."
+  entry: find-missing-model-unique-tests
+  pass_filenames: true
+  language: python
+  types_or: [ yaml ]
+  files: 'models/.*\.(yml|yaml)$'

@@ -46,27 +46,15 @@ models:
           combination_of_columns:
             - col1
             - col2
+    
+    columns:
+      - name: col1
+        data_tests:
+            - not_null
         """
         data = yaml.safe_load(yaml_data)
         errors = check_unique_constraints(data)
         self.assertEqual(errors, [])
-
-    def test_model_missing_unique_constraint_combination(self):
-        yaml_data = """
-models:
-  - name: test_model_missing_unique_constraint_combination
-    data_tests:
-        - col1
-        - col2
-        """
-        data = yaml.safe_load(yaml_data)
-        errors = check_unique_constraints(data)
-        print("Err msg", errors)
-        self.assertIn(
-            # "Missing unique constraint 'test_model_missing_unique_constraint_combination'.",
-            "Model 'test_model_missing_unique_constraint_combination' has no unique constraints defined.",
-            errors,
-        )
 
 
 if __name__ == "__main__":

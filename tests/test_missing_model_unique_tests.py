@@ -1,4 +1,5 @@
 import unittest
+
 import yaml
 
 from cbc_dbt_pre_commit.find_missing_model_unique_tests import check_unique_constraints

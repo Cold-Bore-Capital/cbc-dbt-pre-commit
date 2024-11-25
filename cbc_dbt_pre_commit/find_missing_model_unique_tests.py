@@ -1,9 +1,14 @@
 import argparse
-from typing import List, Optional, Sequence, Union
+from typing import List
+from typing import Optional
+from typing import Sequence
+from typing import Union
+
 import yaml
 
+
 def check_unique_constraints(
-        data: dict, unique_columns: Optional[List[Union[str, List[str]]]] = None
+    data: dict, unique_columns: Optional[List[Union[str, List[str]]]] = None
 ) -> list:
     errors = []
 
@@ -15,7 +20,7 @@ def check_unique_constraints(
 
         has_unique_constraints = False
 
-    #check unique constraints at the column level
+    # check unique constraints at the column level
     for column in columns:
         if "unique" in column.get("data_tests", []):
             has_unique_constraints = True
@@ -36,10 +41,13 @@ def check_unique_constraints(
                     if any(c["name"] == col and "unique" in c.get("data_tests", [])):
                         has_unique_constraints = True
                         break
-            elif isinstance(col, list): # combination of columns
+            elif isinstance(col, list):  # combination of columns
                 found_combination = any(
-                    test.get("dbt_utils.unique_combination_of_columns") and
-                    set(test["dbt_utils.unique_combination_of_columns"]).get("combination_of_columns", []) == set(col)
+                    test.get("dbt_utils.unique_combination_of_columns")
+                    and set(test["dbt_utils.unique_combination_of_columns"]).get(
+                        "combination_of_columns", []
+                    )
+                    == set(col)
                     for test in data_tests
                 )
                 if found_combination:
@@ -48,14 +56,9 @@ def check_unique_constraints(
 
     # If no unique constraints are found, append an error
     if not has_unique_constraints:
-        errors.append(
-            f"Model '{model_name}' has no unique constraints defined."
-        )
+        errors.append(f"Model '{model_name}' has no unique constraints defined.")
 
     return errors
-
-
-
 
     #     if unique_columns:
     #         for col in unique_columns:
@@ -90,6 +93,7 @@ def check_unique_constraints(
     #
     # return errors
 
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("filenames", nargs="*", help="Filenames to check")
@@ -101,10 +105,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     # Parse unique column argument, supporting combinations like "col1+col2"
-    unique_columns = [
-        combo.split("+") if "+" in combo else combo
-        for combo in args.unique_columns.split(",")
-    ] if args.unique_columns else None
+    unique_columns = (
+        [
+            combo.split("+") if "+" in combo else combo
+            for combo in args.unique_columns.split(",")
+        ]
+        if args.unique_columns
+        else None
+    )
 
     error_flag = False
     for file_path in args.filenames:
@@ -125,6 +133,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 1
 
     return 0
+
 
 if __name__ == "__main__":
     exit(main(None))

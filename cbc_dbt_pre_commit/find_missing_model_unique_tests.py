@@ -60,6 +60,7 @@ def check_unique_constraints(
 
     return errors
 
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("filenames", nargs="*", help="Filenames to check")

@@ -46,7 +46,7 @@ models:
           combination_of_columns:
             - col1
             - col2
-    
+
     columns:
       - name: col1
         data_tests:
